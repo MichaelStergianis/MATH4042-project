@@ -1,0 +1,8 @@
+# ignore emacs files
+*~
+
+# ignore flymd
+flymd*
+
+# ignore matlab matrices
+*.mat
