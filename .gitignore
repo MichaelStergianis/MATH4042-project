@@ -6,3 +6,14 @@ flymd*
 
 # ignore matlab matrices
 *.mat
+
+# latex ignores
+*.aux
+*.log
+*.out
+*.nav
+*.snm
+*.toc
+*.fdb_latexmk
+*.pdf
+*.fls
