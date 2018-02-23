@@ -17,3 +17,9 @@ flymd*
 *.fdb_latexmk
 *.pdf
 *.fls
+
+# bibliography ignores
+*.bbl
+*.bcf
+*.blg
+*.run.xml
