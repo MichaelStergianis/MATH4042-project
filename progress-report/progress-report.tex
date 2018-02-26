@@ -5,6 +5,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{subcaption}
+%\usepackage{float}
 \usepackage{xcolor}
 \usepackage{setspace}
 \usepackage{hyperref}
@@ -37,6 +39,24 @@ As noted in \cite{Yang2010ImageSH}, super resolution has applications
 when in the manipulations of surveillance videos. A video maybe frozen
 to zoom into a specific area. This may help to look at things like faces or license plates.
 \subsection{Remote Sensing}
+\cite{Li} discusses the applications of super resolution on satellite
+images. The figures below give an example of the improvements that can
+be seen by applying a Wiener filter to a low resolution image. These
+figures come from \cite{Li}.    
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+  \includegraphics[width= 0.4\linewidth]{LR-satellite.png}
+  \caption{\label{fig:label} Satellite low res }
+\end{subfigure}%
+\begin{subfigure}[b]{0.5\textwidth}
+  \centering
+  \includegraphics[width = 0.4\linewidth]{SR-satellite.png}
+  \caption{\label{fig:label} Satellite super res }
+  \end{subfigure}
+\end{figure}
+
 
 \subsection{Medical Imaging}
 Super resolution has applications in Medical Imaging such as improving
