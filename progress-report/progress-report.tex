@@ -21,6 +21,7 @@
 
 \begin{document}
 \maketitle
+
 \section{Interpolation}
 \label{sec:interpolation}
 Much of work in super resolution has to do with interpolation.  There
@@ -84,8 +85,32 @@ to set the constraints in the maximum likelihood estimation. Work is done of ima
  
 \section{Future Work}
 \label{sec:future}
-Hello world
-%
+As seen in section \ref{sec:uses}, there are many practical
+applications of super resolution that are of great benefit to various
+disciplines and areas of industry. We would like to explore this topic
+further in order to produce some working code that can be applied to a low
+resolution image. We plan to proceed and accomplish the following
+tasks:
+\begin{itemize}
+\item Find databases of low resolution images for the
+  above listed applications
+  \item Create low resolution images by adding noise
+  \item Explore and implement interpolation techniques to produce
+    super resolution images
+    \item compare the qualitative differences of low and super
+      resolution images. The following are noted in \cite{CapelMulti}
+      \begin{itemize}
+      \item blur
+      \item  noise
+      \item geometric warping
+        
+        \end{itemize}
+      \item compare the quantitative differences of the images by
+        tracking statistics that compare a produced high resolution image with
+        the ground truth image 
+\end{itemize}
+
+
 \newpage
 % Bibliography
 \printbibliography
