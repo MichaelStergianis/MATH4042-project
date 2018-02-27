@@ -37,7 +37,33 @@ interpolation schemes of note.
 \label{subsec:bilinear}
 Bilinear interpolation is the process of supposing a subpixel
 surrounded by four real pixels and interpolating linearly between the
-four pixels to find the subpixel.
+four pixels to find the subpixel. We have implemented a scheme for
+doing bilinear interpolation, and plan on implementing more schemes
+for interpolation, as well as methods for denoising images before
+applying interpolation. The program can be found under the root of
+this project in the directory \texttt{program/src} and can be called with
+the following options.
+\singlespace{
+\begin{verbatim}
+[michael@stretchtop:src]$ python interpolation.py --help
+usage: interpolation.py [-h] [-f {interpolate}] [-o OUTPUT] img width height
+
+positional arguments:
+  img                   The input image
+  width                 The output image width
+  height                The output image height
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f {interpolate}, --func {interpolate}
+                        The interpolation scheme to use
+  -o OUTPUT, --output OUTPUT
+                        The output file name
+\end{verbatim}}
+  We have left our testing images in the src folder for your
+  comparison. \texttt{sunnyleaves\_small.jpg} is a down sampling of the
+  original image using \texttt{imagemagick}. Whereas our method is
+  output in \texttt{sunny\_ours.jpg}.
 %
 %
 \section{Uses}
@@ -60,13 +86,13 @@ figures come from \cite{Li}.
   \centering
   \begin{subfigure}[b]{0.5\textwidth}
     \centering
-  \includegraphics[width= 0.4\linewidth]{LR-satellite.png}
-  \caption{\label{fig:label} Satellite low res }
+  \includegraphics[width= 0.5\textwidth]{figures/LR-satellite.png}
+  \caption{\label{fig:label} Satellite low res}
 \end{subfigure}%
 \begin{subfigure}[b]{0.5\textwidth}
   \centering
-  \includegraphics[width = 0.4\linewidth]{SR-satellite.png}
-  \caption{\label{fig:label} Satellite super res }
+  \includegraphics[width = 0.5\textwidth]{figures/SR-satellite.png}
+  \caption{\label{fig:label} Satellite super res}
   \end{subfigure}
 \end{figure}
 Satellite image improvement also has applications for forestry and

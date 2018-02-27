@@ -6,4 +6,4 @@
 
 ### Topic
 
-We intend to implement (TBD).
+We intend to various super resolution techniques.
