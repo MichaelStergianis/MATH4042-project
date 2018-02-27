@@ -24,8 +24,8 @@
 
 \section{Introduction}
 We will be examining the imaging application of Image and Video super
-resolution. This application of imaging combines some ideas explored
-in class and had various real world applications. 
+resolution. This application uses some ideas explored
+in class and has various real world applications. 
 \section{Interpolation}
 \label{sec:interpolation}
 Much of work in super resolution has to do with interpolation.  There
@@ -44,11 +44,12 @@ four pixels to find the subpixel.
 \label{sec:uses}
 
 Super resolution is incredibly useful. As noted in
-\cite{Yang2010ImageSH}, there are four main areas where super
+\cite{Yang2010ImageSH}, there are a few major areas where super
 resolution particularly useful.
 \subsection{Surveillance Video}
 As noted in \cite{Yang2010ImageSH}, super resolution has applications
-when in the manipulations of surveillance videos. A video maybe frozen
+which involve the manipulations of surveillance videos. One may be
+required to freeze a video
 to zoom into a specific area. This may help to look at things like faces or license plates.
 \subsection{Remote Sensing}
 \cite{Li} discusses the applications of super resolution on satellite
@@ -74,18 +75,19 @@ agriculture, as noted in \cite{LiSatellite}.
 \subsection{Medical Imaging}
 Super resolution has applications in Medical Imaging such as improving
 the quality of MRI images. \cite{Peled} notes that the quality of the resolution of
-an MRI is limited has limitations such as the imaging time and any
+an MRI has limitations such as the imaging time and any
 movement of the patient. The diffusion-sensitized echo-planar imaging
-technique is acquires the image in shot, avoiding phase problems. Some
-limitations do remain for brain images.  
+technique, \cite{Peled}, acquires the image in shot, avoiding phase problems. Some
+limitations do remain for things like brain images.  
 
 
 \subsection{Multiple Image Resolution}
 Low resolution images can be combined into one higher resolution
 image. This is known as multiple image super resolution. In
-\cite{CapelMulti}, we see that multiple images are used as training
+\cite{CapelMulti}, we see multiple images can be used as training
 data. This paper explores the use of training images
-to set the constraints in the maximum likelihood estimation. Work is done of images of faces in \cite{CapelMulti}.
+to set the constraints in the maximum likelihood estimation. This work
+is applied to images of faces in \cite{CapelMulti}.
  
 \section{Future Work}
 \label{sec:future}
@@ -110,7 +112,8 @@ tasks:
         
         \end{itemize}
       \item compare the quantitative differences of the images by
-        tracking statistics that compare a produced high resolution image with
+        tracking statistics
+        \item Obtain statistics by comparing a produced high resolution image with
         the ground truth image 
 \end{itemize}
 
