@@ -5,14 +5,10 @@ import cv2
 # from denoising import
 from interpolation import interpolate, bilinear
 
-def main(args):
-    out = interpolate(args.img, args.func, [args.width, args.height])
-    print("Now outputting image")
-    cv2.imwrite(args.output, out)
-
-
-if __name__ == '__main__':
+def main():
     ap = argparse.ArgumentParser()
+
+    # command line arguments
     ap.add_argument('img', type=str, help='The input image')
     ap.add_argument('width', type=int, help='The output image width')
     ap.add_argument('height', type=int, help='The output image height')
@@ -24,8 +20,30 @@ if __name__ == '__main__':
         default='bilinear',
         help='The interpolation scheme to use')
     ap.add_argument('-o', '--output', type=str, help='The output file name')
-    ARGS = ap.parse_args()
-    FUNCS = {'bilinear': bilinear}
-    ARGS.func = FUNCS[ARGS.func]
-    ARGS.img = cv2.imread(ARGS.img)
-    main(ARGS)
+
+    args = ap.parse_args()
+    funcs = {'bilinear': bilinear}
+    args.func = funcs[args.func]
+    args.img = cv2.imread(args.img)
+
+    # perform the algorithm
+    out = interpolate(args.img, args.func, [args.width, args.height])
+
+    # do final io ops
+    if args.output is not None:
+        # write the image to disk
+        print("Now outputting image")
+        cv2.imwrite(args.output, out)
+    else:
+        # display the image
+        print("Press q to quit")
+        cv2.imshow('Output', out)
+        while True:
+            key = cv2.waitKey(0)
+            if key == 113: # q
+                break
+        cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    main()
