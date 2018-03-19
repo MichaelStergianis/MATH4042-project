@@ -12,7 +12,7 @@ def bilinear(img, x, y):
     xs = np.array((np.floor(x), np.ceil(x)), dtype=np.int)
     ys = np.array((np.floor(y), np.ceil(y)), dtype=np.int)
     if xs[0] < 0 or xs[1] >= rows or ys[0] < 0 or ys[1] >= cols:
-        return np.asarray([0.0, 0.0, 0.0])
+        return np.zeros(channels)
 
     coef = 1 / (((xs[1] - xs[0]) * (ys[1] - ys[0])) + 1e-5)
     X = np.array([[xs[1] - x, x - xs[0]]])
