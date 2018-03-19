@@ -20,11 +20,15 @@ def main():
         default='bilinear',
         help='The interpolation scheme to use')
     ap.add_argument('-o', '--output', type=str, help='The output file name')
+    ap.add_argument('-g', '--grayscale', action='store_true', help='Convert the image to grayscale when loading')
 
     args = ap.parse_args()
     funcs = {'bilinear': bilinear}
     args.func = funcs[args.func]
-    args.img = cv2.imread(args.img)
+    if args.grayscale:
+        args.img = cv2.imread(args.img, cv2.IMREAD_GRAYSCALE)
+    else:
+        args.img = cv2.imread(args.img)
 
     # perform the algorithm
     out = interpolate(args.img, args.func, [args.width, args.height])
