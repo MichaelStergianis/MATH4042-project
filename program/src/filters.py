@@ -21,5 +21,4 @@ def gaussian(size, mu=np.array([0, 0]), sigma=np.array([1.0, 1.0])):
 
 def median(patch):
     """Returns the median value of a patch"""
-    # TODO Leanna move from ipython to python
-    pass
+    return np.median(patch)
