@@ -34,9 +34,27 @@
 %
 \section{Filtering Techniques}
 \subsection{Bilateral Filtering}
+Bilateral filtering is useful in smoothing images while also
+preserving edges \cite{Paris}.
+\subsection{Gaussian Filtering}
 \subsection{Median Filtering}
-Super resolution techniques often requires some de-blurring
-techniques. Median filtering is a common technique to remove noise
-from an image. 
 %
+\begin{flushleft}
+  %
+  Median filtering is a common technique to remove noise from an
+  image. \cite{Med} explores the median filter. A median filter is a
+  nonlinear filter. A sliding mask is applied to the image, where the
+  value of a noisy pixel is replaced by the median of the pixels in
+  the mask. The performance of the median filter depends on the size
+  of the mask and the distribution of the noise.
+  %
+\end{flushleft}
+%
+\section{Interpolation Techniques}
+%
+\section{Statistics Tracking}
+\newpage
+%
+% Bibliography
+\printbibliography
 \end{document}
