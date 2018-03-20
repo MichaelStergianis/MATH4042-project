@@ -22,3 +22,15 @@ def gaussian(size, mu=np.array([0, 0]), sigma=np.array([1.0, 1.0])):
 def median(patch):
     """Returns the median value of a patch"""
     return np.median(patch)
+
+def normalized_mean(patch):
+    """Computes a new mean, to be used later in denoising"""
+    n,m, _ = shape(patch)
+    patch_vec = patch.reshape([n*m, 1])
+    middle_element = (len(patch_vec) -1)/2
+    median = np.median(patch_vec)
+    patch_vec[middle_element] = median
+    new_median = np.median(patch_vec)
+    return np.mean(patch_vec)
+    
+
