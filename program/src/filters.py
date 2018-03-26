@@ -1,8 +1,11 @@
 import numpy as np
 
+
 def gaussian1d(x, mu, sigma):
-    g = (1 / (sigma * np.sqrt(2 * np.pi))) * np.exp( -((x - mu)**2) / (2 * sigma**2) )
+    g = (1 / (sigma * np.sqrt(2 * np.pi))) * np.exp(-((x - mu)**2) /
+                                                    (2 * sigma**2))
     return g
+
 
 def gaussian(size, mu=np.array([0, 0]), sigma=np.array([1.0, 1.0])):
     """Produces a gaussian filter function conforming to the parameters provided"""
@@ -18,6 +21,7 @@ def gaussian(size, mu=np.array([0, 0]), sigma=np.array([1.0, 1.0])):
         return patch * k
 
     return kernel
+
 
 def median(patch):
     """Returns the median value of a patch"""

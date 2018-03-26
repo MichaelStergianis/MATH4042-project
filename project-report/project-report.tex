@@ -20,17 +20,46 @@
 
 \begin{document}
 \maketitle
-
+%
 \section{Introduction}
-
+\begin{flushleft}
+  %
+  When attempting to increase the detail of an image, any noise in
+  that image will also be used in the interpolation scheme. Therefore
+  an integral first step to super resolution is to denoise the image
+  in a way that preserves edges, corners, and the finer details of the
+  image.
+  %
+\end{flushleft}
+%
 \section{Filtering Techniques}
 \subsection{Bilateral Filtering}
+Bilateral filtering is useful in smoothing images while also
+preserving edges \cite{Paris}.
+\subsection{Gaussian Filtering}
 \subsection{Median Filtering}
-Super resolution techniques often requires some de-blurring
-techniques. Median filtering is a common technique to remove noise
-from an image. 
-
-
-
-
+%
+\begin{flushleft}
+  %
+  Median filtering is a common technique to remove noise from an
+  image. \cite{Med2012} explores the median filter. A median filter is a
+  nonlinear filter. A sliding mask is applied to the image, where the
+  value of a noisy pixel is replaced by the median of the pixels in
+  the mask. The performance of the median filter depends on the size
+  of the mask and the distribution of the noise.\\
+  %
+   \cite{improved-median} and \cite{Med2012} shows progress on an
+   improved median filter over a year. The algorithm in
+   \texttt{improved_median} has been implemented to be compared with
+   the standard median filter. The steps of the algorithm are as
+   follows 
+  \end{flushleft}
+%
+\section{Interpolation Techniques}
+%
+\section{Statistics Tracking}
+%
+% Bibliography
+\newpage
+\printbibliography
 \end{document}
