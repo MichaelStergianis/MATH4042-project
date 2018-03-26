@@ -1,6 +1,9 @@
 """A library of interpolation functions"""
 import numpy as np
 
+BORDER_REPEAT=0
+BORDER_REFLECT=1
+
 def bilinear(img, x, y):
     """Perform bi-linear interpolation"""
     rows, cols, channels = img.shape
@@ -12,7 +15,7 @@ def bilinear(img, x, y):
     xs = np.array((np.floor(x), np.ceil(x)), dtype=np.int)
     ys = np.array((np.floor(y), np.ceil(y)), dtype=np.int)
     if xs[0] < 0 or xs[1] >= rows or ys[0] < 0 or ys[1] >= cols:
-        return np.zeros(channels)
+        return np.zeros([channels])
 
     coef = 1 / (((xs[1] - xs[0]) * (ys[1] - ys[0])) + 1e-5)
     X = np.array([[xs[1] - x, x - xs[0]]])
@@ -46,4 +49,30 @@ def interpolate(img, func, out_size):
     return out.astype(np.uint8)
 
 
+def pad(img, left, right, bottom, top, scheme=BORDER_REPEAT):
+    """Pads the image for convolutions"""
+    # create an output that is the input plus each of the border conditions
 
+    # pad the border using the prescribed scheme
+    return
+
+
+def bilateral(img, kernel, n=5):
+    """Performs bilateral filtering on the image
+    img    - The image
+    kernel - The kernel function (gaussian, median, etc)"""
+    rows, cols = img.shape[:2]
+    img = img.reshape([rows, cols, -1])
+    half_width = n // 2
+    img_p = pad(img, half_width, half_width, half_width, half_width)
+    out = np.empty_like(img)
+
+    # loop over the image
+    channels = img.shape[2]
+    for y in range(rows):
+        for x in range(cols):
+            # do processing
+            patch = get_patch(x, y, n)
+            out[y, x] = img[y, x]
+
+    return
