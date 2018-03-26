@@ -49,15 +49,18 @@ preserving edges \cite{Paris}.
   of the mask and the distribution of the noise.\\
   %
    \cite{improved-median} and \cite{Med2012} shows progress on an
-   improved median filter over a year. The algorithm in
-   \texttt{improved\_median} has been implemented to be compared with
-   the standard median filter. The steps of the algorithm are as
+   improved median filter over a year. The algorithm
+   \texttt{improved\_median} has been implemented to show the improved
+   filtering techniques as suggested by the papers. The improved
+   median filter compared with
+   the standard median filter in the Statistics section. The steps of
+   the improved median filter algorithm are as
    follows
    \begin{enumerate}
    \item an $n\times n$ mask is chosen to slide over the image
      \item the median, \textit{median}, of the mask is computed. This
-       is done by ordering the elements and then choosing the middle
-       one.
+       is done by ordering the elements and choosing the middle
+       element as the median
        \item a new average is computed, \textit{avg}. In this average the
          central element is replaced with \textit{median}.
          \item Each pixel in the mask is compared with
