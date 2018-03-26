@@ -18,6 +18,8 @@
 \author{Leanna Calla \\ Michael Stergianis}
 \date{March 27th, 2018}
 
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+
 \begin{document}
 \maketitle
 %
@@ -34,9 +36,42 @@
 %
 \section{Filtering Techniques}
 \subsection{Bilateral Filtering}
+\begin{flushleft}
 Bilateral filtering is useful in smoothing images while also
-preserving edges \cite{Paris}.
-\subsection{Gaussian Filtering}
+preserving edges \cite{bilateral}. \cite{Faisal-bilateral} explores
+bilateral filtering techniques which encompass Gaussian blur.
+
+\subsubsection{Gaussian Blur}
+As described in \cite{bilateral}, Gaussian blur is a linear filtering
+technique which takes local averages of pixel intensities. The
+Gaussian blurred image is defined as follows
+\[GB[I]_p = \displaystyle \sum_{\textbf{q} \in S}G_{\sigma} \left(
+    \norm{\textbf{p} - \textbf{q}}\right)I_{\textbf{q}} \]
+where the two dimensional Gaussian kernel, $G_{\sigma}(x)$ is given by
+\[G_{\sigma}(x) = \frac{1}{2 \pi \sigma^2} \text{exp} \left(-
+    \frac{x^2}{2 \sigma^2}\right). \]
+
+\subsubsection{Bilateral Filter}
+The Bilateral filter as given in \cite{Faisal-bilateral} is as follows
+\[ BF[I]_{\textbf{p}} = \frac{1}{W_{\textbf{p}}} \displaystyle \sum_{\textbf{q} \in S}G_{\sigma_s} \left(
+    \norm{\textbf{p} - \textbf{q}}\right) G_{\sigma_r}
+  \left(|I_{\textbf{p}} - I_{\textbf{q}}|\right)I_{\textbf{q}} \]
+Where the Gaussian blur term is used as a space weight, and the
+additional term in the sum is the range weight. Note, the sum has also
+been normalized. This filtering technique takes into account the
+effects of space and range parameters. The space parameter,
+$\sigma_s$, refers to the spatial extent of the kernel. The Gaussian
+over this element will decrease the influence of distant pixel. The
+range parameter, $\sigma_r$, refers to the minimum amplitude of an
+edge. The Gaussian over this parameter will decrease the intensity of
+pixels whose value is different from $I_{\textbf{p}}$. The bilateral
+filter tends to break the image into two layers. \cite{bilateral}
+describes the layers as a large layer which is a smoother version of
+the image with the contours preserved and a smaller layer which can be
+thought of as the residual of the image, which may contain noise or
+texture. The bilateral filter smooths an image while preserving the
+image's discontinuities. 
+\end{flushleft}
 \subsection{Median Filtering}
 %
 \begin{flushleft}
@@ -49,10 +84,30 @@ preserving edges \cite{Paris}.
   of the mask and the distribution of the noise.\\
   %
    \cite{improved-median} and \cite{Med2012} shows progress on an
-   improved median filter over a year. The algorithm in
-   \texttt{improved_median} has been implemented to be compared with
-   the standard median filter. The steps of the algorithm are as
-   follows 
+   improved median filter over a year. The algorithm
+   \texttt{improved\_median} has been implemented to show the improved
+   filtering techniques as suggested by the papers. The improved
+   median filter compared with
+   the standard median filter in the Statistics section. The steps of
+   the improved median filter algorithm are as
+   follows
+   \begin{enumerate}
+   \item an $n\times n$ mask is chosen to slide over the image
+     \item the median, \textit{median}, of the mask is computed. This
+       is done by ordering the elements and choosing the middle
+       element as the median
+       \item a new average is computed, \textit{avg}. In this average the
+         central element is replaced with \textit{median}.
+         \item Each pixel in the mask is compared with
+           \textit{avg}
+           \item if every pixel in the mask is greater than the
+             \textit{avg}, then the central pixel is replaced with the
+             median of the patch
+           \item otherwise the patch is unchanged
+             \item steps 4-6 will be repeated until the image has been
+               completely traversed.
+     \end{enumerate}
+   
   \end{flushleft}
 %
 \section{Interpolation Techniques}
