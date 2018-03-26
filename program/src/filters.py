@@ -70,6 +70,7 @@ def convolve(img, kernel, width=5):
     # pad the image
     img_p = cv2.copyMakeBorder(img, half_w, half_w, half_w, half_w, cv2.BORDER_REPLICATE)
     rows_p, cols_p = img_p.shape[:2]
+    img_p = img_p.reshape([rows_p, cols_p, -1])
 
     # create output
     out = np.empty_like(img)
