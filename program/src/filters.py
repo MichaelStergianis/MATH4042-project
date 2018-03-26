@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 
 def gaussian1d(x, mu, sigma):
@@ -47,22 +48,36 @@ def improved_median(patch):
     ## if even one of the values is less than the average leave that pixel alone
     return patch[half_width, half_width]
 
-def bilateral(img, kernel, n=5):
+def bilateral(patch):
     """Performs bilateral filtering on the image
-    img    - The image
-    kernel - The kernel function (gaussian, median, etc)"""
+    patch - the patch on which to operate """
+    half_width = patch.shape[0] // 2
+
+    # TODO finish bilateral
+    return
+
+def convolve(img, kernel):
+    """Convolves img with kernel"""
+    # make okay for grayscale and colour
     rows, cols = img.shape[:2]
     img = img.reshape([rows, cols, -1])
-    half_width = n // 2
-    img_p = pad(img, half_width, half_width, half_width, half_width)
+    channels = img.shape[2]
+
+    # define patch width and half width
+    patch_w = kernel.shape[0]
+    half_w = patch_w // 2
+
+    # pad the image
+    img_p = cv2.copyMakeBorder(img, half_w, half_w, half_w, half_w, cv2.BORDER_REPLICATE)
+    rows_p, cols_p = img_p.shape[:2]
+
+    # create output
     out = np.empty_like(img)
 
-    # loop over the image
-    channels = img.shape[2]
-    for y in range(rows):
-        for x in range(cols):
-            # do processing
-            patch = get_patch(x, y, n)
-            out[y, x] = img[y, x]
-
-    return
+    for i in range(half_w, rows_p - (2 * half_w)):
+        for j in range(half_w, cols_p - (2 * half_w)):
+            for c in range(channels):
+                il, ih = i-half_w, i+half_w+1
+                jl, jh = j-half_w, j+half_w+1
+                out[il:ih, jl:jh, c] = (img_p[il:ih, jl:jh, c] * kernel).flatten().sum()
+    return out
