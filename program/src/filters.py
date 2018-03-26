@@ -46,3 +46,23 @@ def improved_median(patch):
 
     ## if even one of the values is less than the average leave that pixel alone
     return patch[half_width, half_width]
+
+def bilateral(img, kernel, n=5):
+    """Performs bilateral filtering on the image
+    img    - The image
+    kernel - The kernel function (gaussian, median, etc)"""
+    rows, cols = img.shape[:2]
+    img = img.reshape([rows, cols, -1])
+    half_width = n // 2
+    img_p = pad(img, half_width, half_width, half_width, half_width)
+    out = np.empty_like(img)
+
+    # loop over the image
+    channels = img.shape[2]
+    for y in range(rows):
+        for x in range(cols):
+            # do processing
+            patch = get_patch(x, y, n)
+            out[y, x] = img[y, x]
+
+    return

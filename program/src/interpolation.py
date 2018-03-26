@@ -47,32 +47,3 @@ def interpolate(img, func, out_size):
             out[i, j] = func(img[:, :], i_prime, j_prime)
 
     return out.astype(np.uint8)
-
-
-def pad(img, left, right, bottom, top, scheme=BORDER_REPEAT):
-    """Pads the image for convolutions"""
-    # create an output that is the input plus each of the border conditions
-
-    # pad the border using the prescribed scheme
-    return
-
-
-def bilateral(img, kernel, n=5):
-    """Performs bilateral filtering on the image
-    img    - The image
-    kernel - The kernel function (gaussian, median, etc)"""
-    rows, cols = img.shape[:2]
-    img = img.reshape([rows, cols, -1])
-    half_width = n // 2
-    img_p = pad(img, half_width, half_width, half_width, half_width)
-    out = np.empty_like(img)
-
-    # loop over the image
-    channels = img.shape[2]
-    for y in range(rows):
-        for x in range(cols):
-            # do processing
-            patch = get_patch(x, y, n)
-            out[y, x] = img[y, x]
-
-    return
