@@ -56,7 +56,7 @@ def bilateral(patch):
     # TODO finish bilateral
     return
 
-def convolve(img, kernel):
+def convolve(img, kernel, width=5):
     """Convolves img with kernel"""
     # make okay for grayscale and colour
     rows, cols = img.shape[:2]
@@ -64,7 +64,7 @@ def convolve(img, kernel):
     channels = img.shape[2]
 
     # define patch width and half width
-    patch_w = kernel.shape[0]
+    patch_w = width
     half_w = patch_w // 2
 
     # pad the image
@@ -79,5 +79,5 @@ def convolve(img, kernel):
             for c in range(channels):
                 il, ih = i-half_w, i+half_w+1
                 jl, jh = j-half_w, j+half_w+1
-                out[il:ih, jl:jh, c] = (img_p[il:ih, jl:jh, c] * kernel).flatten().sum()
+                out[il:ih, jl:jh, c] = kernel(img_p[il:ih, jl:jh, c]).flatten().sum()
     return out
