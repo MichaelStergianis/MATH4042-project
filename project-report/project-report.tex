@@ -50,9 +50,26 @@ preserving edges \cite{Paris}.
   %
    \cite{improved-median} and \cite{Med2012} shows progress on an
    improved median filter over a year. The algorithm in
-   \texttt{improved_median} has been implemented to be compared with
+   \texttt{improved\_median} has been implemented to be compared with
    the standard median filter. The steps of the algorithm are as
-   follows 
+   follows
+   \begin{enumerate}
+   \item an $n\times n$ mask is chosen to slide over the image
+     \item the median, \textit{median}, of the mask is computed. This
+       is done by ordering the elements and then choosing the middle
+       one.
+       \item a new average is computed, \textit{avg}. In this average the
+         central element is replaced with \textit{median}.
+         \item Each pixel in the mask is compared with
+           \textit{avg}
+           \item if every pixel in the mask is greater than the
+             \textit{avg}, then the central pixel is replaced with the
+             median of the patch
+           \item otherwise the patch is unchanged
+             \item steps 4-6 will be repeated until the image has been
+               completely traversed.
+     \end{enumerate}
+   
   \end{flushleft}
 %
 \section{Interpolation Techniques}
