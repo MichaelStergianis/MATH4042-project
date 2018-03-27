@@ -8,9 +8,11 @@ def gaussian1d(x, mu, sigma):
     return g
 
 
-def gaussian(size, mu=np.array([0, 0]), sigma=np.array([1.0, 1.0])):
+def gaussian(size, mu=[0, 0], sigma=[1.0, 1.0]):
     """Produces a gaussian filter function conforming to the parameters provided"""
     # initialize our kernel to be a square kernel
+    mu = np.asarray(mu)
+    sigma = np.asarray(sigma)
     x = np.arange(size).reshape([-1, 1]) - (size // 2)
 
     g1 = gaussian1d(x, mu[0], sigma[0])
