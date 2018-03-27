@@ -38,7 +38,7 @@ def improved_median(patch):
     med_patch[half_width, half_width] = np.median(patch)
 
     ## new average is computed
-    avg = med_patch.mean()
+    avg = patch.mean()
 
     ## compare each value with new average
     if np.all(med_patch > avg):
