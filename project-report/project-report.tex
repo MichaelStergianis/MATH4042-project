@@ -9,6 +9,7 @@
 \usepackage{xcolor}
 \usepackage{setspace}
 \usepackage{hyperref}
+\usepackage{algorithm2e}
 \usepackage[backend=biber]{biblatex}
 
 \bibliography{project-report.bib}
@@ -25,6 +26,7 @@
 %
 %
 \section{Introduction}
+\label{sec:introduction}
 When attempting to increase the detail of an image, any noise in
 that image will also be used in the interpolation scheme. Therefore
 an integral first step to super resolution is to denoise the image
@@ -33,7 +35,9 @@ image.
 %
 %
 \section{Filtering Techniques}
+\label{sec:filter-tech}
 \subsection{Gaussian Blur}
+\label{subsec:gauss-blur}
 As described in \cite{bilateral}, Gaussian blur is a linear filtering
 technique which takes local averages of pixel intensities. The
 Gaussian blurred image is defined as follows
@@ -44,6 +48,7 @@ where the two dimensional Gaussian kernel, $G_{\sigma}(x)$ is given by
     \frac{x^2}{2 \sigma^2}\right). \]
 %
 \subsection{Bilateral Filter}
+\label{sec:bilateral-filter}
 The Bilateral filter as given in \cite{Faisal-bilateral} is as follows
 
 \[ BF[I]_{\textbf{p}}= \displaystyle \sum_{\textbf{q} \in S} G_{\sigma_s} \left(\norm{\textbf{p} - \textbf{q}}\right) G_{\sigma_r} \left(|I_{\textbf{p}} - I_{\textbf{q}}|\right)I_{\textbf{q}} \]
@@ -64,6 +69,7 @@ texture. The bilateral filter smooths an image while preserving the
 image's discontinuities. 
 %
 \subsection{Median Filtering}
+\label{subsec:median-filter}
 %
 Median filtering is a common technique to remove noise from an
 image. \cite{Med2012} explores the median filter. A median filter is a
@@ -73,41 +79,54 @@ the mask. The performance of the median filter depends on the size
 of the mask and the distribution of the noise.
 
 \subsection{Improved Median}
+\label{subsec:improved-median}
 \cite{improved-median} and \cite{Med2012} shows progress on an
 improved median filter over a year. The algorithm
 \texttt{improved\_median} has been implemented to show the improved
 filtering techniques as suggested by the papers. The improved
 median filter compared with
-the standard median filter in the Statistics section. The steps of
+the standard median filter in the Statistics section \ref{}. The steps of
 the improved median filter algorithm are as
-follows
-\begin{enumerate}
-  \item an $n\times n$ mask is chosen to slide over the image
-  \item the median, \textit{median}, of the mask is computed. This
-    is done by ordering the elements and choosing the middle
-    element as the median
-  \item a new average is computed, \textit{avg}. In this average the
-    central element is replaced with \textit{median}.
-  \item Each pixel in the mask is compared with
-    \textit{avg}
-  \item if every pixel in the mask is greater than the
-    \textit{avg}, then the central pixel is replaced with the
-    median of the patch
-  \item otherwise the patch is unchanged
-  \item steps 4-6 will be repeated until the image has been
-    completely traversed.
-\end{enumerate}
+follows \par
+\begin{algorithm}[H]
+  \KwData{The input (noisy) image}
+  \KwResult{\(denoised\)}
+  \For{\(\Omega \in I\)}{
+    let \(median\) = median(\(\Omega\))\;
+    let \(medianPatch\) = swapCentralPixel(\(\Omega\), \(median\))\;
+    \If{\(\forall q \in \Omega, q > median\)}{
+      setCentral(\(denoised\), \(\Omega\), median(\(medianPatch\)))
+    }
+    % TODO michael finish
+  }
+%   \item an $n\times n$ mask is chosen to slide over the image
+%   \item the median, \textit{median}, of the mask is computed. This
+%     is done by ordering the elements and choosing the middle
+%     element as the median
+%   \item a new average is computed, \textit{avg}. In this average the
+%     central element is replaced with \textit{median}.
+%   \item Each pixel in the mask is compared with
+%     \textit{avg}
+%   \item if every pixel in the mask is greater than the
+%     \textit{avg}, then the central pixel is replaced with the
+%     median of the patch
+%   \item otherwise the patch is unchanged
+%   \item steps 4-6 will be repeated until the image has been
+%     completely traversed.
+  \caption{The improved median algorithm}
+\end{algorithm}
 %
 \section{Interpolation Techniques}
-
+\label{sec:interp-techs}
 % 
-\section{Testing Code}
+\section{Testing}
+\label{sec:test}
 A data set was created with a Matlab script. Two of Matlab's images,
 \texttt{cameraman.tif} and \texttt{peppers.png} were used. Noise was
 added to these images in four different ways. The noisy images are
 shown in figure 1 and 2. The following filters
 were applied
-\begin{itemize}
+\begin{enumerate}
   \item salt and pepper noise, with the default settings, with
   default noise density of 0.05
   \item gaussian noise, with default adding zero mean and variance
@@ -116,30 +135,31 @@ were applied
   and variance 0.04 
   \item poisson noise, default settings generate Poisson noise from
   the data
-\end{itemize}
-  
+\end{enumerate}
+%
 \begin{figure}[H]
   \centering
-  \includegraphics[width =0.15\textwidth]{../images/peps_truth}
-  \includegraphics[width =0.15\textwidth]{../images/peps_noisy1}
-  \includegraphics[width =0.15\textwidth]{../images/peps_noisy2}
-  \includegraphics[width =0.15\textwidth]{../images/peps_noisy3}
-  \includegraphics[width =0.15\textwidth]{../images/peps_noisy4}
+  \includegraphics[width=0.15\textwidth]{images/peps_truth}
+  \includegraphics[width=0.15\textwidth]{images/peps_noisy1}
+  \includegraphics[width=0.15\textwidth]{images/peps_noisy2}
+  \includegraphics[width=0.15\textwidth]{images/peps_noisy3}
+  \includegraphics[width=0.15\textwidth]{images/peps_noisy4}
   \caption{Ground truth displayed first, followed by the noisy images
     ordered by the filters as given above}
 \end{figure}
 \begin{figure}[H]
   \centering
-  \includegraphics[width =0.15\textwidth]{../images/camera_truth}
-  \includegraphics[width =0.15\textwidth]{../images/camera_noisy1}
-  \includegraphics[width =0.15\textwidth]{../images/camera_noisy2}
-  \includegraphics[width =0.15\textwidth]{../images/camera_noisy3}
-  \includegraphics[width =0.15\textwidth]{../images/camera_noisy4}
+  \includegraphics[width=0.15\textwidth]{images/camera_truth}
+  \includegraphics[width=0.15\textwidth]{images/camera_noisy1}
+  \includegraphics[width=0.15\textwidth]{images/camera_noisy2}
+  \includegraphics[width=0.15\textwidth]{images/camera_noisy3}
+  \includegraphics[width=0.15\textwidth]{images/camera_noisy4}
   \caption{Ground truth displayed first, followed by the noisy
     images ordered by the filters as given above}
 \end{figure}   
 % 
 \section{Statistics Tracking}
+\label{sec:stats-tracking}
 % 
 Three different denoising techniques have been applied to the
 figures. Signal to noise ratios (snr) and root mean
@@ -147,7 +167,8 @@ square errors (rmse) have been computed to show the effectiveness of each
 filtering technique.
 % 
 \subsection{Gaussian Denoising}
-The Gaussian technique as described in section 2.1 has been applied
+\label{subsec:gauss-denoise}
+The Gaussian technique as described in section \ref{subsec:gauss-blur} has been applied
 to the noisy images. The resulting images are seen in figure 3 and 4.
 \subsubsection{Performance on colour image - peppers}
 \begin{figure}[H]
@@ -158,18 +179,16 @@ to the noisy images. The resulting images are seen in figure 3 and 4.
   \includegraphics[width =0.2\textwidth]{images/denoised/peps_noisy4_gaussian}
   \caption{Gaussian filter applied to all four noisy images }
 \end{figure}
-\begin{tabular}{|c|c|c|c|c|}
-  \hline
-  \multicolumn{5}{|c|}{Image Statistics - Performance of Gaussian blur}\\
-  \hline
-  \hline
-  & salt \& pepper noise & gaussian noise&speckle noise & poisson noise\\
-  \hline
-  snr & 0.3062540126612596 &0.2583390404539884  & 0.25708580687724447  &  0.2721887912258063\\
-  \hline
-  rmse &  0.31783307329595933 & 0.3647440957521513 & 0.33988432669381763 &  0.29706777764981346 \\
-  \hline
-\end{tabular}
+\begin{table}[H]
+  \begin{tabular}{c|c|c|c|c}
+    & salt \& pepper noise & gaussian noise&speckle noise & poisson noise\\
+    \hline
+    snr & 0.3062540126612596 &0.2583390404539884  & 0.25708580687724447  &  0.2721887912258063\\
+    \hline
+    rmse &  0.31783307329595933 & 0.3647440957521513 & 0.33988432669381763 &  0.29706777764981346 \\
+  \end{tabular}
+  \caption{Image Statistics -- Performance of Gaussian blur on peppers}
+\end{table}
 %
 \subsubsection{Performance on grayscale image - cameraman}
 \begin{figure}[H]
@@ -194,6 +213,7 @@ to the noisy images. The resulting images are seen in figure 3 and 4.
 \end{tabular}
 %
 \subsection{Median Denoising}
+\label{subsec:median-denoise}
 The median filter as described in 2.3 was applied to the set of
 noisy images. Results can be seen in figures 5 and 6.
 \subsubsection{Performance on colour image - peppers}
@@ -241,6 +261,7 @@ noisy images. Results can be seen in figures 5 and 6.
 \end{tabular}
 %
 \subsection{Improved Median Denoising}
+\label{subsec:improve-median-denoise}
 The algorithm is proposed by \cite{improved-median} and
 \cite{Med2012} has been applied to the noisy images. Results found
 in figures 7 and 8.
@@ -290,6 +311,7 @@ in figures 7 and 8.
 \end{tabular}
 % 
 \subsection{Bilateral Denoising}
+\label{subsec:bilateral-denoise}
 \subsubsection{Performance on colour image - peppers}
 \subsubsection{Performance on grayscale image - cameraman}
 % Bibliography
