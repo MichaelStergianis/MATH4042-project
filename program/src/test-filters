@@ -19,13 +19,17 @@ for image in *_noisy?.png; do
 	filename=${image%.*}
 	output=${OUTDIR}/${filename}_${filter}.png
 
+	# execute super resolution
 	SUPER_COMMAND="${PYTHON} ${SUPER} ${image} -k ${filter} -o ${output}"
 	echo ${SUPER_COMMAND}
 	${SUPER_COMMAND}
 
+	# execute statistics
 	STATS_COMMAND="${PYTHON} ${STATS} ${output} ${truth} --snr --rmse"
 	echo ${STATS_COMMAND}
 	${STATS_COMMAND}
     done
 done
+
+# move back to execution directory
 popd
