@@ -20,11 +20,7 @@ def main():
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument(
-        'img', type=str, help='The image on which to compute statistics')
-    ap.add_argument(
-        'ground',
-        type=str,
-        help='The ground truth image on which to compute statistics')
+        'pairs', type=str, nargs='+', help='The images on which to compute statistics')
     ap.add_argument(
         '--snr',
         action='store_true',
@@ -36,11 +32,19 @@ def main():
 
     args = ap.parse_args()
 
-    if args.snr:
-        print(snr(args.img, args.ground))
+    # make sure even number of args
+    assert(len(args.pairs) % 2 == 0)
+    pairs = np.array(args.pairs).reshape([-1, 2])
 
-    if args.rmse:
-        print(rmse(args.img, args.ground))
+    for pair in pairs:
+        print("Statistics for {}".format(pair[0]))
+        img = cv2.imread(pair[0])
+        ground = cv2.imread(pair[1])
+        if args.snr:
+            print("SNR:", snr(img, ground))
+
+        if args.rmse:
+            print("RMSE:", rmse(img, ground))
 
 
 if __name__ == '__main__':

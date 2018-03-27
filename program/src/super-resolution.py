@@ -11,15 +11,15 @@ def main():
 
     # command line arguments
     ap.add_argument('img', type=str, help='The input image')
-    ap.add_argument('width', type=int, help='The output image width')
-    ap.add_argument('height', type=int, help='The output image height')
     ap.add_argument(
-        '-f',
-        '--func',
+        '-i',
+        '--interpolation',
         type=str,
-        choices=['bilinear'],
-        default='bilinear',
+        choices=['bilinear', 'None'],
+        default='None',
         help='The interpolation scheme to use')
+    ap.add_argument('--width', type=int, help='The output image width')
+    ap.add_argument('--height', type=int, help='The output image height')
     ap.add_argument(
         '-k',
         '--kernel',
@@ -33,8 +33,13 @@ def main():
     ap.add_argument('-g', '--grayscale', action='store_true', help='Convert the image to grayscale when loading')
 
     args = ap.parse_args()
-    funcs = {'bilinear': bilinear}
-    args.func = funcs[args.func]
+
+    # check to make sure something is in the pipeline
+    if args.kernel == 'None' and args.interpolation == 'None':
+        raise ValueError("Must provide arguments to do something")
+
+    interpolations = {'bilinear': bilinear}
+    args.interpolation = interpolations[args.interpolation]
 
     patch_width = args.patch_width
 
@@ -48,13 +53,17 @@ def main():
     else:
         args.img = cv2.imread(args.img)
 
-    # perform the algorithm
     img = args.img
+
+
+    # convolution
     if args.kernel is not None:
-        print("Convolve now")
         img = convolve(img, args.kernel, patch_width)
-    print("Interpolate now")
-    img = interpolate(img, args.func, [args.width, args.height])
+
+    if args.interpolation is not None:
+        if args.width is None or args.height is None:
+            raise ValueError("For interpolation you must provide width and height arguments")
+        img = interpolate(img, args.interpolation, [args.width, args.height])
 
     # do final io ops
     if args.output is not None:
