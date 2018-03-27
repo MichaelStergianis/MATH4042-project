@@ -52,7 +52,7 @@ where the two dimensional Gaussian kernel, $G_{\sigma}(x)$ is given by
 \subsection{Bilateral Filter}
 The Bilateral filter as given in \cite{Faisal-bilateral} is as follows
 
-\[  \left(|I_{\textbf{p}} - I_{\textbf{q}}|\right)I_{\textbf{q}} \]
+\[ BF[I]_{\textbf{p}}= \displaystyle \sum_{\textbf{q} \in S} G_{\sigma_s} \left(\norm{\textbf{p} - \textbf{q}}\right) G_{\sigma_r} \left(|I_{\textbf{p}} - I_{\textbf{q}}|\right)I_{\textbf{q}} \]
 Where the Gaussian blur term is used as a space weight, and the
 additional term in the sum is the range weight. Note, the sum has also
 been normalized. This filtering technique takes into account the
