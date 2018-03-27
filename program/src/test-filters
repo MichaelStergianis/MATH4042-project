@@ -1,0 +1,31 @@
+#! /bin/bash
+
+PYTHON=$(which python3)
+SUPER=$(realpath super-resolution.py)
+STATS=$(realpath statistics.py)
+OUTDIR=./denoised
+
+# move to images directory
+pushd ../../images/
+
+if [ ! -d ${OUTDIR} ]; then
+    mkdir ${OUTDIR}
+fi
+
+# perform filtering
+for image in *_noisy?.png; do
+    truth=$(echo ${image} | sed "s/noisy./truth/")
+    for filter in gaussian median improved_median; do
+	filename=${image%.*}
+	output=${OUTDIR}/${filename}_${filter}.png
+
+	SUPER_COMMAND="${PYTHON} ${SUPER} ${image} -k ${filter} -o ${output}"
+	echo ${SUPER_COMMAND}
+	${SUPER_COMMAND}
+
+	STATS_COMMAND="${PYTHON} ${STATS} ${output} ${truth} --snr --rmse"
+	echo ${STATS_COMMAND}
+	${STATS_COMMAND}
+    done
+done
+popd

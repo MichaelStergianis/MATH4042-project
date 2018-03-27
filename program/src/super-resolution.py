@@ -4,7 +4,7 @@ import cv2
 # from filters import
 # from denoising import
 from interpolation import interpolate, bilinear
-from filters import gaussian, median, convolve
+from filters import gaussian, median, improved_median, convolve
 
 def main():
     ap = argparse.ArgumentParser()
@@ -24,7 +24,7 @@ def main():
         '-k',
         '--kernel',
         type=str,
-        choices=['gaussian', 'median', 'None'],
+        choices=['gaussian', 'median', 'improved_median', 'None'],
         default='None',
         help='The kernel to convolve over the image'
     )
@@ -38,13 +38,14 @@ def main():
     if args.kernel == 'None' and args.interpolation == 'None':
         raise ValueError("Must provide arguments to do something")
 
-    interpolations = {'bilinear': bilinear}
+    interpolations = {'bilinear': bilinear, 'None': None}
     args.interpolation = interpolations[args.interpolation]
 
     patch_width = args.patch_width
 
     kernels = {'gaussian': gaussian(patch_width),
                'median': median,
+               'improved_median': improved_median,
                'None': None}
     args.kernel = kernels[args.kernel]
 

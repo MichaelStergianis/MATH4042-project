@@ -32,7 +32,7 @@ def median(patch):
 def improved_median(patch):
     """A median filter that makes decisions about how to compute the return value"""
     ## central pixel is swapped with median
-    half_width = patch.size[0] // 2
+    half_width = patch.shape[0] // 2
     # copy the array
     med_patch = np.array(patch)
     med_patch[half_width, half_width] = np.median(patch)
