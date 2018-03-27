@@ -4,7 +4,7 @@ import cv2
 # from filters import
 # from denoising import
 from interpolation import interpolate, bilinear
-from filters import gaussian, median, improved_median, convolve
+from filters import gaussian, median, improved_median, bilateral, convolve
 
 def main():
     ap = argparse.ArgumentParser()
@@ -24,7 +24,8 @@ def main():
         '-k',
         '--kernel',
         type=str,
-        choices=['gaussian', 'median', 'improved_median', 'None'],
+        choices=['gaussian', 'median', 'improved_median', 'bilateral', 'None'],
+        nargs='+',
         default='None',
         help='The kernel to convolve over the image'
     )
@@ -39,15 +40,14 @@ def main():
         raise ValueError("Must provide arguments to do something")
 
     interpolations = {'bilinear': bilinear, 'None': None}
-    args.interpolation = interpolations[args.interpolation]
 
     patch_width = args.patch_width
 
     kernels = {'gaussian': gaussian(patch_width),
                'median': median,
                'improved_median': improved_median,
+               'bilateral': bilateral(patch_width),
                'None': None}
-    args.kernel = kernels[args.kernel]
 
     if args.grayscale:
         args.img = cv2.imread(args.img, cv2.IMREAD_GRAYSCALE)
@@ -56,15 +56,17 @@ def main():
 
     img = args.img
 
-
     # convolution
-    if args.kernel is not None:
-        img = convolve(img, args.kernel, patch_width)
+    if args.kernel != 'None':
+        for kernel in args.kernel:
+            kernel = kernels[kernel]
+            img = convolve(img, kernel, patch_width)
 
-    if args.interpolation is not None:
+    if args.interpolation != 'None':
         if args.width is None or args.height is None:
             raise ValueError("For interpolation you must provide width and height arguments")
-        img = interpolate(img, args.interpolation, [args.width, args.height])
+        interp_method = interpolations[args.interpolation]
+        img = interpolate(img, interp_method, [args.width, args.height])
 
     # do final io ops
     if args.output is not None:

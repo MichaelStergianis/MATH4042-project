@@ -50,13 +50,28 @@ def improved_median(patch):
     ## if even one of the values is less than the average leave that pixel alone
     return patch[half_width, half_width]
 
-def bilateral(patch):
+def bilateral(size, mu=[0, 0], sigma=[1.0, 1.0]):
     """Performs bilateral filtering on the image
     patch - the patch on which to operate """
-    half_width = patch.shape[0] // 2
+    half_width = size // 2
+    # we use a spatial gaussian for distance from central
+    s_kernel = gaussian(size, mu, sigma)
 
-    # TODO finish bilateral
-    return
+    # create the bilateral kernel
+    def kernel(patch):
+        t = patch.dtype
+        patch = np.array(patch, dtype=np.float32)
+        std_dev = np.std(patch)
+        if std_dev == 0.0:
+            std_dev += 1e-5
+
+        mean = patch.mean()
+        i_kernel = gaussian1d(patch, mean, std_dev)
+        # we use a intensity gaussian for disparity with central pixel
+        W_p = s_kernel(patch) * i_kernel
+        return ((1 / W_p.flatten().sum()) * (W_p * patch)).astype(t)
+
+    return kernel
 
 def convolve(img, kernel, width=5):
     """Convolves img with kernel"""
