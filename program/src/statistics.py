@@ -12,6 +12,12 @@ def rmse(img, ground_truth):
 
 def snr(img, ground_truth):
     """Calculates the signal to noise ratio of an image"""
+    snr_val = np.linalg.norm(ground_truth) / np.linalg.norm(img)
+    return snr_val
+
+
+def log_snr(img, ground_truth):
+    """Calculates the log signal to noise ratio of an image"""
     snr_val = 20 * np.log10(np.linalg.norm(ground_truth) / np.linalg.norm(img))
     return snr_val
 
@@ -26,25 +32,35 @@ def main():
         action='store_true',
         help='Whether or not to compute the snr value')
     ap.add_argument(
+        '--log-snr',
+        action='store_true',
+        help='Whether or not to compute the snr value')
+    ap.add_argument(
         '--rmse',
         action='store_true',
         help='Whether or not to compute the rmse value')
 
     args = ap.parse_args()
+    if (args.rmse is False) and (args.snr is False) and (args.log_snr is False):
+        raise ValueError("Must provide at least one statistic to compute")
 
     # make sure even number of args
     assert(len(args.pairs) % 2 == 0)
     pairs = np.array(args.pairs).reshape([-1, 2])
 
+    fmt_str = "{0:8s}{1:2.5f}"
     for pair in pairs:
         print("Statistics for {}".format(pair[0]))
         img = cv2.imread(pair[0])
         ground = cv2.imread(pair[1])
         if args.snr:
-            print("SNR:", snr(img, ground))
+            print(fmt_str.format("SNR:", snr(img, ground)))
+
+        if args.log_snr:
+            print(fmt_str.format("logSNR:", log_snr(img, ground)))
 
         if args.rmse:
-            print("RMSE:", rmse(img, ground))
+            print(fmt_str.format("RMSE:", rmse(img, ground)))
 
 
 if __name__ == '__main__':
