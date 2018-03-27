@@ -153,8 +153,64 @@ image's discontinuities.
   \section{Statistics Tracking}
   %
   Three different denoising techniques have been applied to the
-  figures and the results of the signal to noise ratios and root mean
-  square errors have been
+  figures. Signal to noise ratios (snr) and root mean
+  square errors (rmse) have been computed to show the effectiveness of each
+  filtering technique.
+  %
+  \subsection{Gaussian Denoising}
+  The Gaussian technique as described in section 2.1 has been applied
+  to the noisy images. The resulting images are seen in figure 3.
+  \subsubsection{Performance on colour image - peppers}
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/peps_noisy1_gaussian}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/peps_noisy2_gaussian}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/peps_noisy3_gaussian}
+      \includegraphics[width =0.2\textwidth]{../../denoised/peps_noisy4_gaussian}
+      \caption{Gaussian filter applied to all four noisy images }
+    \end{figure}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      \multicolumn{5}{|c|}{Image Statistics - Performance of Gaussian blur}\\
+    \hline
+    \hline
+      & salt \& pepper noise & gaussian noise&speckle noise & poisson noise\\
+      \hline
+      snr & 0.3062540126612596 &0.2583390404539884  & 0.25708580687724447  &  0.2721887912258063\\
+      \hline
+      rmse &  0.31783307329595933 & 0.3647440957521513 & 0.33988432669381763 &  0.29706777764981346 \\
+      \hline
+
+    \end{tabular}
+
+
+    \subsubsection{Performance on grayscale image - cameraman}
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/camera_noisy1_gaussian}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/camera_noisy2_gaussian}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/camera_noisy3_gaussian}
+      \includegraphics[width =0.2\textwidth]{../../denoised/camera_noisy4_gaussian}
+      \caption{Gaussian filter applied to all four noisy images }
+    \end{figure}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      \multicolumn{5}{|c|}{Image Statistics - Performance of Gaussian blur}\\
+    \hline
+    \hline
+      & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
+      \hline
+      snr & 0.17488795783381422 & 0.2671556265312336 & 0.44244029168868537 & 0.2648366712931854 \\
+      \hline
+      rmse &0.1895823535533745  &  0.2098089541648092 &  0.18415594753856307 & 0.16077582960772\\
+      \hline
+    \end{tabular}
 % Bibliography
 \newpage
 \printbibliography
