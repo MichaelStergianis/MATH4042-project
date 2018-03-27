@@ -159,7 +159,7 @@ image's discontinuities.
   %
   \subsection{Gaussian Denoising}
   The Gaussian technique as described in section 2.1 has been applied
-  to the noisy images. The resulting images are seen in figure 3.
+  to the noisy images. The resulting images are seen in figure 3 and 4.
   \subsubsection{Performance on colour image - peppers}
   \begin{figure}[H]
       \centering
@@ -211,6 +211,123 @@ image's discontinuities.
       rmse &0.1895823535533745  &  0.2098089541648092 &  0.18415594753856307 & 0.16077582960772\\
       \hline
     \end{tabular}
+
+
+    \subsection{Median Denoising}
+    The median filter as described in 2.3 was applied to the set of
+    noisy images. Results can be seen in figures 5 and 6.
+    \subsubsection{Performance on colour image - peppers}
+ \begin{figure}[H]
+      \centering
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/peps_noisy1_median}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/peps_noisy2_median}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/peps_noisy3_median}
+      \includegraphics[width =0.2\textwidth]{../../denoised/peps_noisy4_median}
+      \caption{Median filter filter applied to all four noisy images }
+    \end{figure}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      \multicolumn{5}{|c|}{Image Statistics - Performance of Median filtering}\\
+    \hline
+    \hline
+      & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
+      \hline
+      snr & 0.028134497955144933 & 0.03591899383833425 & 0.13359570054045616& 0.055596194981823936\\
+      \hline
+      rmse & 0.19619888890010365 &  0.22255589087006272 &  0.21299238333129938  &0.20900209235717904 \\
+      \hline
+    \end{tabular}
+
+     \subsubsection{Performance on grayscale image - cameraman}
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/camera_noisy1_median}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/camera_noisy2_median}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/camera_noisy3_median}
+      \includegraphics[width =0.2\textwidth]{../../denoised/camera_noisy4_median}
+      \caption{Median filter applied to all four noisy images }
+    \end{figure}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      \multicolumn{5}{|c|}{Image Statistics - Performance of median filtering}\\
+    \hline
+    \hline
+      & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
+      \hline
+      snr & 0.08315701668985512  & 0.08410367208570518  &0.14337351728292427   & 0.09863654556279272  \\
+      \hline
+      rmse & 0.34980467051384057 & 0.3874309974622892  & 0.37596914471909365 & 0.37580375518905496\\
+      \hline
+    \end{tabular}
+
+
+
+    \subsection{Improved Median Denoising}
+    The algorithm is proposed by \cite{improved-median} and
+    \cite{Med2012} has been applied to the noisy images. Results found
+    in figures 7 and 8.
+    \subsubsection{Performance on colour image - peppers}
+ \begin{figure}[H]
+      \centering
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/peps_noisy1_improved_median}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/peps_noisy2_improved_median}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/peps_noisy3_improved_median}
+      \includegraphics[width =0.2\textwidth]{../../denoised/peps_noisy4_median}
+      \caption{Median filter filter applied to all four noisy images }
+    \end{figure}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      \multicolumn{5}{|c|}{Image Statistics - Performance of Improved Median filtering}\\
+    \hline
+    \hline
+      & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
+      \hline
+      snr & -0.4544166729015866 & -0.1760805296664718 &0.05383791460923117 & 0.008529101964318823\\
+      \hline
+      rmse &  0.03494201787954231 &  0.21491019365990058 &  0.21598442221428243  & 0.2176207971318631 \\
+      \hline
+    \end{tabular}
+
+     \subsubsection{Performance on grayscale image - cameraman}
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/camera_noisy1_improved_median}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/camera_noisy2_improved_median}
+      \includegraphics[width
+      =0.2\textwidth]{../../denoised/camera_noisy3_improved_median}
+      \includegraphics[width =0.2\textwidth]{../../denoised/camera_noisy4_improved_median}
+      \caption{Median filter applied to all four noisy images }
+    \end{figure}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      \multicolumn{5}{|c|}{Image Statistics - Performance of median filtering}\\
+    \hline
+    \hline
+      & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
+      \hline
+      snr & -0.200848500670179
+  & -0.14511501219155332 &-0.20882486468325787 & -0.034602099271076006 \\
+      \hline
+      rmse &  0.08282491739687234&  0.37479268741132926  & 0.37121840869871303 & 0.3846180590701985  \\
+      \hline
+    \end{tabular}
+
+
+    \subsection{Bilateral Denoising}
+    \subsubsection{Performance on colour image - peppers}
+    \subsubsection{Performance on grayscale image - cameraman}
+    
 % Bibliography
 \newpage
 \printbibliography
