@@ -10,6 +10,7 @@
 \usepackage{setspace}
 \usepackage{hyperref}
 \usepackage{algorithm2e}
+\usepackage{esvect}
 \usepackage[backend=biber]{biblatex}
 
 \bibliography{project-report.bib}
@@ -33,6 +34,17 @@ an integral first step to super resolution is to denoise the image
 in a way that preserves edges, corners, and the finer details of the
 image.
 %
+Provided with this paper is a software package that is capable of
+utilizing the following denoising techniques.
+\begin{itemize}
+  \item gaussian filtering \ref{subsec:gauss-blur}
+  \item bilateral filtering \ref{subsec:bilateral-filter}
+  \item median filtering \ref{subsec:median-filter}
+  \item ``improved'' median filtering \ref{subsec:improved-median}
+\end{itemize}
+%
+In conjunction with denoising techniques, the software package makes
+use of bilinear interpolation to change the size of images.
 %
 \section{Filtering Techniques}
 \label{sec:filter-tech}
@@ -44,29 +56,37 @@ Gaussian blurred image is defined as follows
 \[GB[I]_p = \displaystyle \sum_{\textbf{q} \in S}G_{\sigma} \left(
     \norm{\textbf{p} - \textbf{q}}\right)I_{\textbf{q}} \]
 where the two dimensional Gaussian kernel, $G_{\sigma}(x)$ is given by
-\[G_{\sigma}(x) = \frac{1}{2 \pi \sigma^2} \text{exp} \left(-
-    \frac{x^2}{2 \sigma^2}\right). \]
+\[G_{\sigma}(\bar{x}) = \frac{1}{2 \pi \sigma^2} \text{exp} \left(-
+    \frac{\bar{x}^2}{2 \sigma^2}\right). \]
 %
 \subsection{Bilateral Filter}
-\label{sec:bilateral-filter}
+\label{subsec:bilateral-filter}
 The Bilateral filter as given in \cite{Faisal-bilateral} is as follows
-
-\[ BF[I]_{\textbf{p}}= \displaystyle \sum_{\textbf{q} \in S} G_{\sigma_s} \left(\norm{\textbf{p} - \textbf{q}}\right) G_{\sigma_r} \left(|I_{\textbf{p}} - I_{\textbf{q}}|\right)I_{\textbf{q}} \]
-Where the Gaussian blur term is used as a space weight, and the
-additional term in the sum is the range weight. Note, the sum has also
-been normalized. This filtering technique takes into account the
-effects of space and range parameters. The space parameter,
-$\sigma_s$, refers to the spatial extent of the kernel. The Gaussian
-over this element will decrease the influence of distant pixel. The
-range parameter, $\sigma_r$, refers to the minimum amplitude of an
+%
+\begin{align*}
+  BF[I]_{\textbf{p}}&= \displaystyle \frac{1}{W_p} \sum_{\textbf{q} \in S} G_{\sigma_s} \left(\norm{\textbf{p} - \textbf{q}}\right)
+  G_{\sigma_r} \left(|I_{\textbf{\(\mu\)}} - I_{\textbf{q}}|\right)I_{\textbf{q}} \\
+  W_p &= \sum_{\textbf{q} \in S} G_{\sigma_s} \left(\norm{\textbf{p} - \textbf{q}}\right)
+        G_{\sigma_r} \left(|I_{\textbf{\(\mu\)}} - I_{\textbf{q}}|\right) \\
+\end{align*}
+%
+Where the Gaussian blur term is used as a spatial weighting. The
+additional term
+\(G_{\sigma_r} \left(|I_{\textbf{p}} - I_{\textbf{q}}|\right)\) in the
+sum is the intensity weight. Note, the sum is normalized by the
+\(W_p\) term. This filtering technique takes into account the effects
+of space and intensity parameters. The space parameter, $\sigma_s$,
+refers to the spatial extent of the kernel. The Gaussian over this
+element will decrease the influence of distant pixel. The intensity
+parameter, $\sigma_r$, refers to the minimum over the amplitude of an
 edge. The Gaussian over this parameter will decrease the intensity of
-pixels whose value is different from $I_{\textbf{p}}$. The bilateral
-filter tends to break the image into two layers. \cite{bilateral}
-describes the layers as a large layer which is a smoother version of
-the image with the contours preserved and a smaller layer which can be
-thought of as the residual of the image, which may contain noise or
-texture. The bilateral filter smooths an image while preserving the
-image's discontinuities. 
+pixels whose value is different from $I_{\textbf{\(\mu\)}}$. The
+bilateral filter tends to break the image into two
+layers. \cite{bilateral} describes the layers as a large layer which
+is a smoother version of the image with the contours preserved and a
+smaller layer which can be thought of as the residual of the image,
+which may contain noise or texture. The bilateral filter smooths an
+image while preserving the image's discontinuities.
 %
 \subsection{Median Filtering}
 \label{subsec:median-filter}
@@ -80,40 +100,31 @@ of the mask and the distribution of the noise.
 
 \subsection{Improved Median}
 \label{subsec:improved-median}
-\cite{improved-median} and \cite{Med2012} shows progress on an
-improved median filter over a year. The algorithm
-\texttt{improved\_median} has been implemented to show the improved
-filtering techniques as suggested by the papers. The improved
-median filter compared with
-the standard median filter in the Statistics section \ref{}. The steps of
-the improved median filter algorithm are as
-follows \par
-\begin{algorithm}[H]
+%
+During research a method similar to median filtering was found. It
+claims to improve on standard median filtering by taking into account
+the average intensity of the patch over which the median is
+computed. The algorithm \texttt{improved\_median} has been implemented
+to show the improved filtering techniques as suggested by
+\cite{improved-median} and \cite{Med2012}. The improved median filter
+is compared with the standard median filter in the Statistics section
+\ref{sec:stats-tracking}. The steps of the improved median filter
+algorithm can be seen in \ref{algorithm:improved-median} \par
+%
+\begin{algorithm}[t]
   \KwData{The input (noisy) image}
   \KwResult{\(denoised\)}
   \For{\(\Omega \in I\)}{
     let \(median\) = median(\(\Omega\))\;
     let \(medianPatch\) = swapCentralPixel(\(\Omega\), \(median\))\;
-    \If{\(\forall q \in \Omega, q > median\)}{
+    \eIf{\(\forall q \in \Omega, q > median\)}{
       setCentral(\(denoised\), \(\Omega\), median(\(medianPatch\)))
+    }{ % else
+      setCentral(\(denoised\), \(\Omega\), getCentralPixel(\(\Omega\)))
     }
-    % TODO michael finish
   }
-%   \item an $n\times n$ mask is chosen to slide over the image
-%   \item the median, \textit{median}, of the mask is computed. This
-%     is done by ordering the elements and choosing the middle
-%     element as the median
-%   \item a new average is computed, \textit{avg}. In this average the
-%     central element is replaced with \textit{median}.
-%   \item Each pixel in the mask is compared with
-%     \textit{avg}
-%   \item if every pixel in the mask is greater than the
-%     \textit{avg}, then the central pixel is replaced with the
-%     median of the patch
-%   \item otherwise the patch is unchanged
-%   \item steps 4-6 will be repeated until the image has been
-%     completely traversed.
   \caption{The improved median algorithm}
+  \label{algorithm:improved-median}
 \end{algorithm}
 %
 \section{Interpolation Techniques}
@@ -132,7 +143,7 @@ scheme can be applied to a two dimensional array.
 
 \section{Testing}
 \label{sec:test}
-A data set was created with a Matlab script. Two of Matlab's images,
+A data set was created with a custom Matlab script. Two of Matlab's images,
 \texttt{cameraman.tif} and \texttt{peppers.png} were used. Noise was
 added to these images in four different ways. The noisy images are
 shown in figure 1 and 2. The following filters
@@ -173,9 +184,13 @@ were applied
 \label{sec:stats-tracking}
 % 
 Three different denoising techniques have been applied to the
-figures. Signal to noise ratios (snr) and root mean
-square errors (rmse) have been computed to show the effectiveness of each
-filtering technique.
+figures. Signal to noise ratios (SNR) and root mean
+square errors (RMSE) have been computed to show the effectiveness of each
+filtering technique. \par
+%
+It should be noted that all photos embedded in this report are not
+necessarily representative of their true images. These images can be
+found in a sub-directory called \texttt{images/denoised}
 % 
 \subsection{Gaussian Denoising}
 \label{subsec:gauss-denoise}
@@ -191,16 +206,17 @@ to the noisy images. The resulting images are seen in figures 3 and 4.
   \caption{Gaussian filter applied to all four noisy images }
 \end{figure}
 \begin{table}[H]
-\begin{tabular}{c|c|c|c|c}
-  & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
-  \hline
-  snr & 0.17488795783381422 & 0.2671556265312336 & 0.44244029168868537 & 0.2648366712931854 \\
-  \hline
-  rmse &0.1895823535533745  &  0.2098089541648092 &  0.18415594753856307 & 0.16077582960772\\
-\end{tabular}
+  \centering
+  \begin{tabular}{c|c|c|c|c}
+    & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
+    \hline
+    % peppers gaussian
+    SNR & 1.02034 & 1.03124 & 1.05226 & 1.03096 \\
+    logSNR & 0.17489 & 0.26716 & 0.44244 & 0.26484 \\
+    RMSE & 0.18958 & 0.20981 & 0.18416 & 0.16078 \\
+  \end{tabular}
 \caption{Image Statistics - Performance of Gaussian blur on peppers}
 \end{table}
-
 %
 \subsubsection{Performance on grayscale image - cameraman}
 \begin{figure}[H]
@@ -211,22 +227,26 @@ to the noisy images. The resulting images are seen in figures 3 and 4.
   \includegraphics[width =0.2\textwidth]{images/denoised/camera_noisy4_gaussian}
   \caption{Gaussian filter applied to all four noisy images }
 \end{figure}
+%
 \begin{table}[H]
+  \centering
   \begin{tabular}{c|c|c|c|c}
-    & salt \& pepper noise & gaussian noise&speckle noise & poisson noise\\
+    & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
     \hline
-    snr & 0.3062540126612596 &0.2583390404539884  & 0.25708580687724447  &  0.2721887912258063\\
-    \hline
-    rmse &  0.31783307329595933 & 0.3647440957521513 & 0.33988432669381763 &  0.29706777764981346 \\
+    % cameraman gaussian
+    SNR & 1.03019 & 1.03004 & 1.03183 & 1.03589 \\
+    logSNR & 0.30625 & 0.25834 & 0.25709 & 0.27219 \\
+    RMSE &  0.31783 & 0.36474 & 0.33988 & 0.29707 \\
   \end{tabular}
   \caption{Image Statistics -- Performance of Gaussian blur on cameraman}
 \end{table}
-
 %
 \subsection{Median Denoising}
 \label{subsec:median-denoise}
 The median filter as described in \ref{subsec:median-filter} was applied to the set of
-noisy images. Results can be seen in figures 5 and 6.
+noisy images. Results can be seen in figures 5 and 6. Unfortunately
+median filtering degrades the finer details of the image that are not
+necessarily noise. It does perform visually well on salt and pepper noise.
 \subsubsection{Performance on colour image - peppers}
 \begin{figure}[H]
   \centering
@@ -237,15 +257,16 @@ noisy images. Results can be seen in figures 5 and 6.
   \caption{Median filter filter applied to all four noisy images }
 \end{figure}
 \begin{table}[H]
-\begin{tabular}{c|c|c|c|c}
-  & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
-  \hline
-  snr & 0.028134497955144933 & 0.03591899383833425 & 0.13359570054045616& 0.055596194981823936\\
-  \hline
-  rmse & 0.19619888890010365 &  0.22255589087006272 &  0.21299238333129938  &0.20900209235717904 \\
-  \hline
-\end{tabular}
-\caption{Image Statistics - Performance of median filtering on peppers }
+  \centering
+  \begin{tabular}{c|c|c|c|c}
+    & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
+    \hline
+    % peppers median
+    SNR & 1.00324 & 1.00414 & 1.01550 & 1.00642 \\
+    logSNR & 0.02813 & 0.03592 & 0.13360 & 0.05560 \\
+    RMSE & 0.19620 & 0.22256 & 0.21299 & 0.20900 \\
+  \end{tabular}
+  \caption{Image Statistics - Performance of median filtering on peppers }
 \end{table}
 
 \subsubsection{Performance on grayscale image - cameraman}
@@ -259,16 +280,17 @@ noisy images. Results can be seen in figures 5 and 6.
 \end{figure}
 
 \begin{table}[H]
-\begin{tabular}{c|c|c|c|c}
-  & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
-  \hline
-  snr & 0.08315701668985512  & 0.08410367208570518  &0.14337351728292427   & 0.09863654556279272  \\
-  \hline
-  rmse & 0.34980467051384057 & 0.3874309974622892  & 0.37596914471909365 & 0.37580375518905496\\
- 
-\end{tabular}
-\caption{Image Statistics -- Performance of median filtering on camera
-man}
+  \centering
+  \begin{tabular}{c|c|c|c|c}
+    & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
+    \hline
+    % cameraman median
+    SNR & 1.00962 & 1.00973 & 1.01664 & 1.01142 \\
+    logSNR & 0.08316 & 0.08410 & 0.14337 & 0.09864 \\
+    RMSE & 0.34980 & 0.38743 & 0.37597 & 0.37580 \\
+  \end{tabular}
+  \caption{Image Statistics -- Performance of median filtering on camera
+    man}
 \end{table}
 %
 \subsection{Improved Median Denoising}
@@ -286,12 +308,14 @@ in figures 7 and 8.
   \caption{Median filter filter applied to all four noisy images }
 \end{figure}
 \begin{table}[H]
-\begin{tabular}{c|c|c|c|c}
-  & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
-  \hline
-  snr & -0.4544166729015866 & -0.1760805296664718 &0.05383791460923117 & 0.008529101964318823\\
-  \hline
-  rmse &  0.03494201787954231 &  0.21491019365990058 &  0.21598442221428243  & 0.2176207971318631 \\
+  \centering
+  \begin{tabular}{c|c|c|c|c}
+    & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
+    \hline
+    % peppers improved median
+    SNR & 0.94903 & 0.97993 & 1.00622 & 1.00098 \\
+    logSNR & -0.45442 & -0.17608 & 0.05384 & 0.00853 \\
+    RMSE & 0.03494 & 0.21491 & 0.21598 & 0.21762 \\
   \end{tabular}
   \caption{Image Statistics -- Performance of improved median
     filtering on peppers}
@@ -307,13 +331,14 @@ in figures 7 and 8.
   \caption{Median filter applied to all four noisy images }
 \end{figure}
 \begin{table}[H]
+  \centering
   \begin{tabular}{c|c|c|c|c}
-    & salt \& pepper noise & gaussian noise&speckle noise & poisson noise\\
+    & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
     \hline
-    snr & -0.200848500670179
-  & -0.14511501219155332 &-0.20882486468325787 & -0.034602099271076006 \\
-  \hline
-  rmse &  0.08282491739687234&  0.37479268741132926  & 0.37121840869871303 & 0.3846180590701985  \\
+    % camerman improved median
+    SNR & 0.97714 & 0.98343 & 0.97624 & 0.99602 \\
+    logSNR & -0.20085 & -0.14512 & -0.20882 & -0.03460 \\
+    RMSE & 0.08282 & 0.37479 & 0.37122 & 0.38462 \\
   \end{tabular}
   \caption{Image Statistics -- Performance of improved median filtering on the cameraman}
 \end{table}
@@ -322,9 +347,50 @@ in figures 7 and 8.
 \subsection{Bilateral Denoising}
 \label{subsec:bilateral-denoise}
 \subsubsection{Performance on colour image - peppers}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.2\textwidth]{images/denoised/peps_noisy1_bilateral}
+  \includegraphics[width=0.2\textwidth]{images/denoised/peps_noisy2_bilateral}
+  \includegraphics[width=0.2\textwidth]{images/denoised/peps_noisy3_bilateral}
+  \includegraphics[width=0.2\textwidth]{images/denoised/peps_noisy4_bilateral}
+  \caption{Median filter applied to all four noisy images }
+\end{figure}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c | c | c | c | c}
+    & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
+    \hline
+    SNR & 1.07976 & 1.06662 & 1.09281 & 1.09654 \\
+    log SNR & 0.66653 & 0.56022 & 0.77086 & 0.80048 \\
+    RMSE & 0.07052 & 0.18022 & 0.10038 & 0.06773 \\
+  \end{tabular}
+  \caption{Image Statistics -- Performance of bilateral filtering on peppers}
+  \label{table:}
+\end{table}
+%
+%
 \subsubsection{Performance on grayscale image - cameraman}
-
-
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.2\textwidth]{images/denoised/camera_noisy1_bilateral}
+  \includegraphics[width=0.2\textwidth]{images/denoised/camera_noisy2_bilateral}
+  \includegraphics[width=0.2\textwidth]{images/denoised/camera_noisy3_bilateral}
+  \includegraphics[width=0.2\textwidth]{images/denoised/camera_noisy4_bilateral}
+  \caption{Median filter applied to all four noisy images }
+\end{figure}
+%
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c | c | c | c | c}
+    & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
+    \hline
+    SNR & 1.07108 & 1.06053 & 1.05174 & 1.07656 \\
+    log SNR & 0.59647 & 0.51042 & 0.43817 & 0.64076 \\
+    RMSE & 0.18482 & 0.30997 & 0.27710 & 0.18267 \\
+  \end{tabular}
+  \caption{Image Statistics -- Performance of bilateral filtering on cameraman}
+  \label{table:}
+\end{table}
 % Bibliography
 \newpage
 \printbibliography
