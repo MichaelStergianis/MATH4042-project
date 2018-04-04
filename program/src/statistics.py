@@ -12,13 +12,14 @@ def rmse(img, ground_truth):
 
 def snr(img, ground_truth):
     """Calculates the signal to noise ratio of an image"""
-    snr_val = np.linalg.norm(ground_truth) / np.linalg.norm(img)
+    snr_val = (np.linalg.norm(ground_truth)
+               / (np.linalg.norm(img) - np.linalg.norm(ground_truth)))
     return snr_val
 
 
 def log_snr(img, ground_truth):
     """Calculates the log signal to noise ratio of an image"""
-    snr_val = 20 * np.log10(np.linalg.norm(ground_truth) / np.linalg.norm(img))
+    snr_val = 20 * np.log10(snr(img, ground_truth))
     return snr_val
 
 
