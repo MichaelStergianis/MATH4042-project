@@ -59,16 +59,21 @@ def bilateral(size, mu=[0, 0], sigma=[1.0, 1.0]):
 
     # create the bilateral kernel
     def kernel(patch):
+        # if its a patch that is continuous and 0, return 0
+        if np.all(patch == 0):
+            return patch[half_width, half_width]
         t = patch.dtype
         patch = np.array(patch, dtype=np.float32)
         std_dev = np.std(patch)
         if std_dev == 0.0:
             std_dev += 1e-5
 
-        mean = patch.mean()
-        i_kernel = gaussian1d(patch, mean, std_dev)
         # we use a intensity gaussian for disparity with central pixel
-        W_p = s_kernel(patch) * i_kernel
+        i_kernel = gaussian1d(patch, patch.mean(), std_dev)
+
+        spatial_weight = s_kernel(patch)
+
+        W_p = spatial_weight * i_kernel
         return ((1 / W_p.flatten().sum()) * (W_p * patch)).astype(t)
 
     return kernel
