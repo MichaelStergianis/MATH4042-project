@@ -16,7 +16,7 @@
 \bibliography{project-report.bib}
 \doublespacing
 
-\title{Final Project Report}
+\title{A Comparison of Denoising Methods for Use in Super Resolution}
 \author{Leanna Calla \\ Michael Stergianis}
 \date{March 27th, 2018}
 
@@ -396,6 +396,31 @@ in figures 7 and 8.
   \caption{Image Statistics -- Performance of bilateral filtering on cameraman}
   \label{table:}
 \end{table}
+\section{Algorithm Speed}
+Nonlinear filters, particularly the median filter and bilateral
+filters produced better output images, although due to the nature of
+the filters their run times were longer than the linear filter
+used. Run times also increase as the image size increases. 
+\section{Conclusion}
+Due to the complexity of super resolution techniques, we focused more
+on the task of denoising, which is a necessary step in super resolution
+algorithms. As seen by the statistics and algorithm speed analysis,
+nonlinear filters tend to perform better. The output images produced
+by the median filter and bilateral filters gave results that appeared
+similar to that of the ground truth images. \\
+
+We were faced with problems when working with the improved median
+filter. This technique combines averaging and median patch
+analysis. The SNR values were not as excepted. Some of the SNR values
+given negative results, which indicate that the noise in these images
+are higher than the signal. \\
+
+Super resolution is high level imaging technique that has many
+applications in things like medical imaging, surveillance and
+satellite images to name a few. We explored the task of denoising
+images with bilinear interpolation, which would serve as an integral
+step in super resolution. 
+
 % Bibliography
 \newpage
 \printbibliography
