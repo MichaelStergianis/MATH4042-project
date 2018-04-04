@@ -16,7 +16,7 @@
 \bibliography{project-report.bib}
 \doublespacing
 
-\title{Final Project Report}
+\title{A Comparison of Denoising Methods for Use in Super Resolution}
 \author{Leanna Calla \\ Michael Stergianis}
 \date{March 27th, 2018}
 
@@ -70,15 +70,16 @@ The Bilateral filter as given in \cite{Faisal-bilateral} is as follows
 %
 \begin{align*}
   BF[I]_{\textbf{p}}&= \displaystyle \frac{1}{W_p} \sum_{\textbf{q} \in S} G_{\sigma_s} \left(\norm{\textbf{p} - \textbf{q}}\right)
-  G_{\sigma_r} \left(|I_{\textbf{\(\mu\)}} - I_{\textbf{q}}|\right)I_{\textbf{q}} \\
+  G_{\sigma_r} \left(|I_{\textbf{p}} - I_{\textbf{q}}|\right)I_{\textbf{q}} \\
   W_p &= \sum_{\textbf{q} \in S} G_{\sigma_s} \left(\norm{\textbf{p} - \textbf{q}}\right)
-        G_{\sigma_r} \left(|I_{\textbf{\(\mu\)}} - I_{\textbf{q}}|\right) \\
+        G_{\sigma_r} \left(|I_{\textbf{p}} - I_{\textbf{q}}|\right) \\
 \end{align*}
 %
-Where the Gaussian blur term is used as a spatial weighting. The
+where the Gaussian blur term is used as a spatial weighting. The
 additional term
 \(G_{\sigma_r} \left(|I_{\textbf{p}} - I_{\textbf{q}}|\right)\) in the
-sum is the intensity weight. Note, the sum is normalized by the
+sum is the intensity weight. The norms used in the above formulae are
+Euclidean two norms over the pixels of the image.  Note, the sum is normalized by the
 \(W_p\) term. This filtering technique takes into account the effects
 of space and intensity parameters. The space parameter, $\sigma_s$,
 refers to the spatial extent of the kernel. The Gaussian over this
@@ -145,7 +146,8 @@ separately, and then combined with the following formula so that the
 scheme can be applied to a two dimensional array.
 \[f(x, y) = \frac{1}{(x_2 - x_1)(y_2-y_1)} [x_2-x \quad x - x_1]
 \begin{bmatrix} f(Q_{11}) & f(Q_{12}) \\ f(Q_{21}) & f(Q_{22}) \end{bmatrix} \begin{bmatrix} y_2 - y \\ y-y_1 \end{bmatrix}\]
-
+where the value of $f(x, y)$ is know at the following coordinates $Q_{11} = (x_1, y_1), Q_{12}(x_1, y_2), Q_{21}=
+(x_2, y_1)$ and $Q_{22} = (x_2, y_2)$.
 \section{Testing}
 \label{sec:test}
 A data set was created with a custom Matlab script. Two of Matlab's images,
@@ -397,6 +399,31 @@ in figures 7 and 8.
   \caption{Image Statistics -- Performance of bilateral filtering on cameraman}
   \label{table:}
 \end{table}
+\section{Algorithm Speed}
+Nonlinear filters, particularly the median filter and bilateral
+filters produced better output images, although due to the nature of
+the filters their run times were longer than the linear filter
+used. Run times also increase as the image size increases. 
+\section{Conclusion}
+Due to the complexity of super resolution techniques, we focused more
+on the task of denoising, which is a necessary step in super resolution
+algorithms. As seen by the statistics and algorithm speed analysis,
+nonlinear filters tend to perform better. The output images produced
+by the median filter and bilateral filters gave results that appeared
+similar to that of the ground truth images. \\
+
+We were faced with problems when working with the improved median
+filter. This technique combines averaging and median patch
+analysis. The SNR values were not as excepted. Some of the SNR values
+given negative results, which indicate that the noise in these images
+are higher than the signal. \\
+
+Super resolution is high level imaging technique that has many
+applications in things like medical imaging, surveillance and
+satellite images to name a few. We explored the task of denoising
+images with bilinear interpolation, which would serve as an integral
+step in super resolution. 
+
 % Bibliography
 \newpage
 \printbibliography
