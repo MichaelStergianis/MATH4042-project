@@ -216,9 +216,9 @@ to the noisy images. The resulting images are seen in figures 3 and 4.
     & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
     \hline
     % peppers gaussian
-    SNR & 1.02034 & 1.03124 & 1.05226 & 1.03096 \\
-    logSNR & 0.17489 & 0.26716 & 0.44244 & 0.26484 \\
-    RMSE & 0.18958 & 0.20981 & 0.18416 & 0.16078 \\
+    SNR    & 0.53854  & 0.55966  & 0.53392  & 0.50490  \\
+    logSNR & -5.37559 & -5.04155 & -5.45044 & -5.93588 \\
+    RMSE   & 0.18958  & 0.20981  & 0.18416  & 0.16078  \\
   \end{tabular}
 \caption{Image Statistics - Performance of Gaussian blur on peppers}
 \end{table}
@@ -239,9 +239,9 @@ to the noisy images. The resulting images are seen in figures 3 and 4.
     & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
     \hline
     % cameraman gaussian
-    SNR & 1.03019 & 1.03004 & 1.03183 & 1.03589 \\
-    logSNR & 0.30625 & 0.25834 & 0.25709 & 0.27219 \\
-    RMSE &  0.31783 & 0.36474 & 0.33988 & 0.29707 \\
+    SNR    & 0.69222  & 0.74803  & 0.73455  & 0.67792  \\
+    logSNR & -3.19513 & -2.52157 & -2.67952 & -3.37643 \\
+    RMSE   & 0.31783  & 0.36474  & 0.33988  & 0.29707  \\
   \end{tabular}
   \caption{Image Statistics -- Performance of Gaussian blur on cameraman}
 \end{table}
@@ -267,9 +267,9 @@ necessarily noise. It does perform visually well on salt and pepper noise.
     & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
     \hline
     % peppers median
-    SNR & 1.00324 & 1.00414 & 1.01550 & 1.00642 \\
-    logSNR & 0.02813 & 0.03592 & 0.13360 & 0.05560 \\
-    RMSE & 0.19620 & 0.22256 & 0.21299 & 0.20900 \\
+    SNR    & 0.66927  & 0.60089  & 0.59269  & 0.59916  \\
+    logSNR & -3.48802 & -4.42404 & -4.54338 & -4.44910 \\
+    RMSE   & 0.19620  & 0.22256  & 0.21299  & 0.20900  \\
   \end{tabular}
   \caption{Image Statistics - Performance of median filtering on peppers }
 \end{table}
@@ -290,9 +290,9 @@ necessarily noise. It does perform visually well on salt and pepper noise.
     & salt \& pepper noise & gaussian noise &speckle noise & poisson noise\\
     \hline
     % cameraman median
-    SNR & 1.00962 & 1.00973 & 1.01664 & 1.01142 \\
-    logSNR & 0.08316 & 0.08410 & 0.14337 & 0.09864 \\
-    RMSE & 0.34980 & 0.38743 & 0.37597 & 0.37580 \\
+    SNR    & 0.86747  & 0.79400  & 0.80019  & 0.80320  \\
+    logSNR & -1.23492 & -2.00357 & -1.93612 & -1.90352 \\
+    RMSE   & 0.34980  & 0.38743  & 0.37597  & 0.37580  \\
   \end{tabular}
   \caption{Image Statistics -- Performance of median filtering on camera
     man}
@@ -310,7 +310,7 @@ in figures 7 and 8.
   \includegraphics[width =0.2\textwidth]{images/denoised/peps_noisy2_improved_median}
   \includegraphics[width =0.2\textwidth]{images/denoised/peps_noisy3_improved_median}
   \includegraphics[width =0.2\textwidth]{images/denoised/peps_noisy4_median}
-  \caption{Median filter filter applied to all four noisy images }
+  \caption{Improved Median filter filter applied to all four noisy images}
 \end{figure}
 \begin{table}[H]
   \centering
@@ -318,9 +318,9 @@ in figures 7 and 8.
     & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
     \hline
     % peppers improved median
-    SNR & 0.94903 & 0.97993 & 1.00622 & 1.00098 \\
-    logSNR & -0.45442 & -0.17608 & 0.05384 & 0.00853 \\
-    RMSE & 0.03494 & 0.21491 & 0.21598 & 0.21762 \\
+    SNR    & 2.34484  & 0.61460   & 0.61501  & 0.59729  \\
+    logSNR & 7.402252 & -4.228108 & -4.22229 & -4.47626 \\
+    RMSE   & 0.03494  & 0.21491   & 0.21598  & 0.21762  \\
   \end{tabular}
   \caption{Image Statistics -- Performance of improved median
     filtering on peppers}
@@ -341,9 +341,9 @@ in figures 7 and 8.
     & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
     \hline
     % camerman improved median
-    SNR & 0.97714 & 0.98343 & 0.97624 & 0.99602 \\
-    logSNR & -0.20085 & -0.14512 & -0.20882 & -0.03460 \\
-    RMSE & 0.08282 & 0.37479 & 0.37122 & 0.38462 \\
+    SNR    & 3.40231   & 0.79924   & 0.82125   & 0.78481  \\
+    logSNR & 10.635485 & -1.946492 & -1.710492 & -2.104670 \\
+    RMSE   & 0.08282   & 0.37479   & 0.37122   & 0.38462  \\
   \end{tabular}
   \caption{Image Statistics -- Performance of improved median filtering on the cameraman}
 \end{table}
@@ -358,16 +358,17 @@ in figures 7 and 8.
   \includegraphics[width=0.2\textwidth]{images/denoised/peps_noisy2_bilateral}
   \includegraphics[width=0.2\textwidth]{images/denoised/peps_noisy3_bilateral}
   \includegraphics[width=0.2\textwidth]{images/denoised/peps_noisy4_bilateral}
-  \caption{Median filter applied to all four noisy images }
+  \caption{Bilateral filter applied to all four noisy images}
 \end{figure}
 \begin{table}[H]
   \centering
   \begin{tabular}{c | c | c | c | c}
     & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
     \hline
-    SNR & 1.07976 & 1.06662 & 1.09281 & 1.09654 \\
-    log SNR & 0.66653 & 0.56022 & 0.77086 & 0.80048 \\
-    RMSE & 0.07052 & 0.18022 & 0.10038 & 0.06773 \\
+    % peppers bilateral
+    SNR    & 0.42792  & 0.51072  & 0.44328  & 0.42758  \\
+    logSNR & -7.37272 & -5.83630 & -7.06639 & -7.37973 \\
+    RMSE   & 0.07052  & 0.18022  & 0.10038  & 0.06773  \\
   \end{tabular}
   \caption{Image Statistics -- Performance of bilateral filtering on peppers}
   \label{table:}
@@ -381,7 +382,7 @@ in figures 7 and 8.
   \includegraphics[width=0.2\textwidth]{images/denoised/camera_noisy2_bilateral}
   \includegraphics[width=0.2\textwidth]{images/denoised/camera_noisy3_bilateral}
   \includegraphics[width=0.2\textwidth]{images/denoised/camera_noisy4_bilateral}
-  \caption{Median filter applied to all four noisy images }
+  \caption{Bilateral filter applied to all four noisy images}
 \end{figure}
 %
 \begin{table}[H]
@@ -389,9 +390,9 @@ in figures 7 and 8.
   \begin{tabular}{c | c | c | c | c}
     & Salt and pepper & Gaussian noise & Speckle noise & Poisson noise \\
     \hline
-    SNR & 1.07108 & 1.06053 & 1.05174 & 1.07656 \\
-    log SNR & 0.59647 & 0.51042 & 0.43817 & 0.64076 \\
-    RMSE & 0.18482 & 0.30997 & 0.27710 & 0.18267 \\
+    SNR    & 0.58776  & 0.67933  & 0.64772  & 0.58747  \\
+    logSNR & -4.61606 & -3.35841 & -3.77226 & -4.62022 \\
+    RMSE   & 0.18482  & 0.30997  & 0.27710  & 0.18267  \\
   \end{tabular}
   \caption{Image Statistics -- Performance of bilateral filtering on cameraman}
   \label{table:}

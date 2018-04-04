@@ -17,7 +17,7 @@ fi
 # perform filtering
 for image in *_noisy?.png; do
     truth=$(echo ${image} | sed "s/noisy./truth/")
-    for filter in bilateral; do
+    for filter in gaussian median improved_median bilateral; do
 	filename=${image%.*}
 	output=${OUTDIR}/${filename}_${filter}.png
 
@@ -27,7 +27,7 @@ for image in *_noisy?.png; do
 	${SUPER_COMMAND}
 
 	# execute statistics
-	STATS_COMMAND="${PYTHON} ${STATS} ${output} ${truth} --snr --rmse"
+	STATS_COMMAND="${PYTHON} ${STATS} ${output} ${truth} --snr --log-snr --rmse"
 	echo ${STATS_COMMAND}
 	${STATS_COMMAND}
     done
