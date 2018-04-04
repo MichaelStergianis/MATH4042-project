@@ -43,7 +43,7 @@ def improved_median(patch):
     avg = patch.mean()
 
     ## compare each value with new average
-    if np.all(med_patch > avg):
+    if np.all(med_patch > avg) or np.all(med_patch < avg):
         ## if all values are greater than average take median of patch and return
         return np.median(med_patch)
 

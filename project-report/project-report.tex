@@ -115,7 +115,7 @@ to show the improved filtering techniques as suggested by
 \cite{improved-median} and \cite{Med2012}. The improved median filter
 is compared with the standard median filter in the Statistics section
 \ref{sec:stats-tracking}. The steps of the improved median filter
-algorithm can be seen in \ref{algorithm:improved-median} \par
+algorithm can be seen in \ref{algorithm:improved-median}. \par
 %
 \begin{algorithm}[t]
   \KwData{The input (noisy) image}
@@ -123,7 +123,8 @@ algorithm can be seen in \ref{algorithm:improved-median} \par
   \For{\(\Omega \in I\)}{
     let \(median\) = median(\(\Omega\))\;
     let \(medianPatch\) = swapCentralPixel(\(\Omega\), \(median\))\;
-    \eIf{\(\forall q \in \Omega, q > median\)}{
+    \eIf{\(\forall q \in medianPatch,\ q > median\ \textbf{or}\
+      \forall q \in medianPatch,\ q < median\)}{
       setCentral(\(denoised\), \(\Omega\), median(\(medianPatch\)))
     }{ % else
       setCentral(\(denoised\), \(\Omega\), getCentralPixel(\(\Omega\)))
@@ -132,6 +133,23 @@ algorithm can be seen in \ref{algorithm:improved-median} \par
   \caption{The improved median algorithm}
   \label{algorithm:improved-median}
 \end{algorithm}
+%
+Algorithm \ref{algorithm:improved-median} iterates over the image,
+patch by patch with stride lengths [1, 1]. For each patch it computes
+the median and stores it for later use. It then creates a copy of the
+patch where the central pixel is swapped with the median. Next, if all
+pixels in the original patch are greater than the median, or, if all
+of the pixels in the original patch are less than the median the
+central pixel of the patch in the original image is replaced with the
+new pixel. If this is not the case, then the central pixel is
+unchanged. Of course some strategic copying takes place in order to
+avoid influencing future patches.\par
+%
+This algorithm could most likely be
+improved by instead looking at the coherency between pixels in all
+channels and deciding whether or not the central pixel is an
+outlier. Currently the implementation operates on one channel at a
+time.
 %
 \section{Interpolation Techniques}
 \label{sec:interp-techs}
@@ -153,7 +171,7 @@ where the value of $f(x, y)$ is know at the following coordinates $Q_{11} = (x_1
 A data set was created with a custom Matlab script. Two of Matlab's images,
 \texttt{cameraman.tif} and \texttt{peppers.png} were used. Noise was
 added to these images in four different ways. The noisy images are
-shown in figure 1 and 2. The following filters
+shown in Figures \ref{fig:noisy-peps} and \ref{fig:noisy-cam}. The following filters
 were applied
 \begin{enumerate}
   \item salt and pepper noise, with the default settings, with
@@ -166,7 +184,7 @@ were applied
   the data
 \end{enumerate}
 %
-\begin{figure}[H]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.25\textwidth]{images/peps_truth}
   \includegraphics[width=0.25\textwidth]{images/peps_noisy1}
@@ -175,8 +193,9 @@ were applied
   \includegraphics[width=0.25\textwidth]{images/peps_noisy4}
   \caption{Images top row from left to right: ground truth, salt and pepper
     noise, gaussian noise. Images bottom row, left to right: speckle noise, poisson noise}
+  \label{fig:noisy-peps}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.25\textwidth]{images/camera_truth}
   \includegraphics[width=0.25\textwidth]{images/camera_noisy1}
@@ -185,6 +204,7 @@ were applied
   \includegraphics[width=0.25\textwidth]{images/camera_noisy4}
   \caption{Images top row from left to right: ground truth, salt and pepper
     noise, gaussian noise. Images bottom row, left to right: speckle noise, poisson noise}
+  \label{fig:noisy-cam}
 \end{figure}   
 % 
 \section{Statistics Tracking}
